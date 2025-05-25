@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Лабораторна №2 - Масиви, Рядки, Функції</title>
+</head>
+<body>
+  <h1>Лабораторна робота №2</h1>
+  <h2>Тема: Масиви, рядки в JavaScript. Функції у JavaScript.</h2>
+  <div id="output"></div>
+
+  <script>
+    const output = document.getElementById("output");
+
+    function print(title, value) {
+      const section = document.createElement("div");
+      section.innerHTML = `<h3>${title}</h3><p>${value}</p>`;
+      output.appendChild(section);
+    }
+
+    // Задача 1
+    const array1 = Array.from({ length: 16 }, () => Math.floor(Math.random() * 100));
+    const evenIndexElements = array1.filter((_, index) => index % 2 === 0);
+    const sortedDescending = [...evenIndexElements].sort((a, b) => b - a);
+
+    print("Задача 1: Масив із 16 чисел", array1.join(", "));
+    print("Елементи з парних позицій", evenIndexElements.join(", "));
+    print("Відсортовані у спадному порядку", sortedDescending.join(", "));
+
+    // Задача 2
+    function numberToUkrText(num) {
+      const units = ["", "одна", "дві", "три", "чотири", "п’ять", "шість", "сім", "вісім", "дев’ять"];
+      const teens = ["десять", "одинадцять", "дванадцять", "тринадцять", "чотирнадцять", "п’ятнадцять", "шістнадцять", "сімнадцять", "вісімнадцять", "дев’ятнадцять"];
+      const tens = ["", "", "двадцять", "тридцять", "сорок", "п’ятдесят", "шістдесят", "сімдесят", "вісімдесят", "дев’яносто"];
+      const hundreds = ["", "сто", "двісті", "триста", "чотириста", "п’ятсот", "шістсот", "сімсот", "вісімсот", "дев’ятсот"];
+
+      if (num < 1 || num > 1000) return "Некоректне значення";
+      if (num === 1000) return "Одна тисяча гривень";
+
+      let result = "";
+      const h = Math.floor(num / 100);
+      const t = Math.floor((num % 100) / 10);
+      const u = num % 10;
+
+      if (h) result += hundreds[h] + " ";
+
+      if (t === 1) {
+        result += teens[u] + " гривень";
+      } else {
+        if (t) result += tens[t] + " ";
+        if (u) {
+          result += units[u] + " ";
+          result += (u === 1) ? "гривня" :
+                    (u >= 2 && u <= 4) ? "гривні" : "гривень";
+        } else {
+          result += "гривень";
+        }
+      }
+
+      return result.trim();
+    }
+
+    const priceInput = prompt("Введіть числове значення вартості (1–1000):");
+    const price = parseInt(priceInput, 10);
+
+    if (!isNaN(price)) {
+      print("Задача 2: Введене значення", price);
+      print("Текстове представлення", numberToUkrText(price));
+    } else {
+      print("Задача 2", "Некоректне введення.");
+    }
+
+    // Задача 3
+    function each(arr, func) {
+      return arr.map(func);
+    }
+
+    const sampleArray = [1, 2, 3, 4, 5];
+    const doubled = each(sampleArray, (el) => el * 2);
+
+    print("Задача 3: Початковий масив", sampleArray.join(", "));
+    print("Результат після each", doubled.join(", "));
+  </script>
+</body>
+</html>
